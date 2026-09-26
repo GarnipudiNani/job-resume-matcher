@@ -1,0 +1,291 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #f4f7fb;
+}
+
+/* Login Page */
+
+.login-page {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.login-card {
+  width: 450px;
+  background: white;
+  padding: 45px;
+  border-radius: 15px;
+  box-shadow: 0 10px 35px rgba(0, 0, 0, 0.08);
+}
+
+.login-card h1 {
+  text-align: center;
+  color: #172554;
+  margin-bottom: 10px;
+}
+
+.subtitle {
+  text-align: center;
+  color: #64748b;
+  margin-bottom: 35px;
+}
+
+.login-card form {
+  display: flex;
+  flex-direction: column;
+}
+
+.login-card label {
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: #334155;
+}
+
+.login-card input {
+  padding: 13px;
+  margin-bottom: 22px;
+  border: 1px solid #cbd5e1;
+  border-radius: 7px;
+  font-size: 15px;
+}
+
+.login-card input:focus {
+  outline: none;
+  border-color: #2563eb;
+}
+
+.login-card button {
+  padding: 13px;
+  border: none;
+  border-radius: 7px;
+  background: #2563eb;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.login-card button:hover {
+  background: #1d4ed8;
+}
+
+
+/* Results Page */
+
+.result-page {
+  min-height: 100vh;
+  padding: 50px;
+  background: #f4f7fb;
+}
+
+.result-card {
+  max-width: 1100px;
+  margin: auto;
+  background: white;
+  padding: 40px;
+  border-radius: 15px;
+  box-shadow: 0 10px 35px rgba(0, 0, 0, 0.08);
+}
+
+.result-card h1 {
+  margin-bottom: 10px;
+  color: #172554;
+}
+
+.result-card h2 {
+  color: #334155;
+  margin-bottom: 30px;
+}
+
+
+/* Match Score */
+
+.match-score {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  background: #dcfce7;
+  border: 12px solid #22c55e;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 28px;
+  font-weight: bold;
+  color: #166534;
+
+  margin-bottom: 10px;
+}
+
+.score-label {
+  font-size: 16px;
+  color: #64748b;
+  margin-bottom: 35px;
+}
+
+
+/* Skills */
+
+.skills-container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.skills-section {
+  padding: 20px;
+  border-radius: 10px;
+  background: #f8fafc;
+}
+
+.skills-section h3 {
+  margin-top: 0;
+  margin-bottom: 15px;
+  color: #1e293b;
+}
+
+.skill {
+  padding: 10px 12px;
+  margin-bottom: 8px;
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+.required {
+  background: #eff6ff;
+  color: #1d4ed8;
+}
+
+.matched {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.missing {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+
+/* Mobile */
+
+@media (max-width: 800px) {
+  .result-page {
+    padding: 20px;
+  }
+
+  .result-card {
+    padding: 25px;
+  }
+
+  .skills-container {
+    grid-template-columns: 1fr;
+  }
+}
+/* Selection Page */
+
+.selection-page {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #f4f7fb;
+}
+
+.selection-card {
+  width: 500px;
+  background: white;
+  padding: 45px;
+  border-radius: 15px;
+  box-shadow: 0 10px 35px rgba(0, 0, 0, 0.08);
+}
+
+.selection-card h1 {
+  text-align: center;
+  color: #172554;
+  margin-bottom: 10px;
+}
+
+.selection-card .subtitle {
+  margin-bottom: 35px;
+}
+
+.selection-card label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: #334155;
+}
+
+.selection-card select {
+  width: 100%;
+  padding: 13px;
+  margin-bottom: 25px;
+  border: 1px solid #cbd5e1;
+  border-radius: 7px;
+  font-size: 15px;
+  background: white;
+}
+
+.selection-card select:focus {
+  outline: none;
+  border-color: #2563eb;
+}
+
+.selection-card button {
+  width: 100%;
+  padding: 13px;
+  border: none;
+  border-radius: 7px;
+  background: #2563eb;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.selection-card button:hover {
+  background: #1d4ed8;
+}
+
+.back-button {
+  margin-top: 30px;
+  width: 100%;
+  padding: 12px;
+  border: none;
+  border-radius: 7px;
+  background: #475569;
+  color: white;
+  cursor: pointer;
+}
+.top-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.top-bar h1 {
+  margin: 0;
+}
+
+.logout-button {
+  width: auto !important;
+  padding: 8px 14px !important;
+  background: #dc2626 !important;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.logout-button:hover {
+  background: #b91c1c !important;
+}

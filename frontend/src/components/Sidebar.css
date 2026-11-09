@@ -1,0 +1,103 @@
+.sidebar {
+  width: 250px;
+  min-height: 100vh;
+  background: #172554;
+  color: white;
+  padding: 25px 18px;
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+}
+
+.sidebar-logo {
+  margin-bottom: 45px;
+  padding-left: 10px;
+}
+
+.sidebar-logo h2 {
+  font-size: 25px;
+  margin-bottom: 6px;
+  color: white;
+}
+
+.sidebar-logo p {
+  font-size: 12px;
+  color: #cbd5e1;
+}
+
+.sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.nav-heading {
+  font-size: 11px;
+  color: #94a3b8;
+  margin-bottom: 10px;
+  padding-left: 10px;
+  letter-spacing: 1px;
+}
+
+/* Menu boxes */
+.sidebar .nav-link {
+  width: 100%;
+  min-height: 48px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  padding: 12px 14px;
+
+  background: #1e3264;
+  border: 1px solid #304477;
+  border-radius: 9px;
+
+  color: #ffffff;
+  font-size: 14px;
+  font-family: Arial, sans-serif;
+  text-align: left;
+
+  cursor: pointer;
+  opacity: 1;
+  transition: 0.2s ease;
+}
+
+.sidebar .nav-link:hover {
+  background: #304b83;
+  border-color: #5273b8;
+  color: white;
+}
+
+.sidebar .nav-link.active {
+  background: #2563eb;
+  border-color: #2563eb;
+  color: white;
+  font-weight: 600;
+}
+
+.nav-link span {
+  font-size: 17px;
+}
+
+.sidebar-bottom {
+  margin-top: auto;
+}
+
+.sidebar-header { display: flex; align-items: flex-start; justify-content: space-between; }
+.mobile-menu-toggle { display: none; }
+
+@media (max-width: 760px) {
+  .sidebar { width: 100%; min-height: 0; padding: 12px 16px; }
+  .sidebar-header { align-items: center; }
+  .sidebar-logo { margin: 0; padding: 0; }
+  .sidebar-logo h2 { font-size: 21px; margin: 0; }
+  .sidebar-logo p { margin: 3px 0 0; }
+  .mobile-menu-toggle { display: inline-flex; align-items: center; justify-content: center; min-height: 42px; padding: 8px 13px; border: 1px solid #6479a7; border-radius: 8px; background: #1e3264; color: white; font-weight: 600; }
+  .sidebar-nav, .sidebar-bottom { display: none; }
+  .sidebar.mobile-open .sidebar-nav { display: flex; margin-top: 14px; }
+  .sidebar.mobile-open .sidebar-bottom { display: block; margin-top: 10px; }
+  .sidebar-nav { gap: 7px; }
+  .nav-heading { margin: 5px 0; }
+  .sidebar .nav-link { min-height: 44px; }
+}

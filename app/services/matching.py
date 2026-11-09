@@ -45,7 +45,7 @@ def normalize_text(text: str) -> str:
     text = text.lower()
 
     text = re.sub(
-        r"[^a-z0-9+#.\s]",
+        r"[^a-z0-9+#.\-\s]",
         " ",
         text,
     )
@@ -73,11 +73,13 @@ def extract_skills(text: str) -> set[str]:
 
     found_skills = set()
 
-    for skill in SKILLS:
-        if skill in normalized_text:
-            normalized_skill = normalize_skill(skill)
-
-            found_skills.add(normalized_skill)
+    for skill in SKILLS.union(SKILL_ALIASES):
+        skill_pattern = re.escape(skill)
+        if skill in {"rest api", "rest apis"}:
+            skill_pattern = r"rest\ apis?"
+        pattern = rf"(?<![a-z0-9]){skill_pattern}(?![a-z0-9])"
+        if re.search(pattern, normalized_text):
+            found_skills.add(normalize_skill(skill))
 
     return found_skills
 

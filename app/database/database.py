@@ -6,7 +6,8 @@ from app.core.config import settings
 
 engine = create_engine(
     settings.database_url,
-    echo=True,
+    # SQL echo would write resume text and other user data to application logs.
+    echo=False,
 )
 
 SessionLocal = sessionmaker(

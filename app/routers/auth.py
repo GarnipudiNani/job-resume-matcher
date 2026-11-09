@@ -101,15 +101,9 @@ def get_current_user(
             algorithms=[settings.jwt_algorithm],
         )
 
-        user_id = payload.get("sub")
+        user_id = int(payload.get("sub"))
 
-        if user_id is None:
-            raise HTTPException(
-                status_code=status.HTTP_401_UNAUTHORIZED,
-                detail="Invalid token",
-            )
-
-    except jwt.InvalidTokenError:
+    except (jwt.InvalidTokenError, TypeError, ValueError):
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Invalid token",
@@ -117,7 +111,7 @@ def get_current_user(
 
     user = (
         db.query(User)
-        .filter(User.id == int(user_id))
+        .filter(User.id == user_id)
         .first()
     )
 

@@ -1,0 +1,26 @@
+.dashboard-header { margin: 0 0 24px; }
+.dashboard-header h1 { margin: 0; color: #172554; font-size: 28px; }
+.dashboard-header p { color: #64748b; margin: 8px 0; }
+.stats-container { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; margin: 18px 0 26px; }
+.stat-card { background: white; padding: 21px; border-radius: 12px; box-shadow: 0 5px 18px #0f172a08; }
+.stat-card h3 { margin: 0 0 13px; font-size: 14px; color: #64748b; font-weight: 600; }
+.stat-card strong { display: block; color: #172554; font-size: 27px; }
+.stat-card p { margin: 8px 0 0; color: #94a3b8; font-size: 13px; }
+.welcome-card { background: white; padding: 25px; border-radius: 12px; }
+.welcome-card h2 { margin: 0 0 10px; color: #172554; }
+.welcome-card p { margin: 0; color: #64748b; line-height: 1.6; }
+.dashboard-recent-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; margin: 18px 0 24px; }
+.recent-card { min-width: 0; padding: 20px; background: white; border: 1px solid #e5eaf1; border-radius: 12px; }
+.recent-heading { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 12px; }
+.recent-heading h2 { margin: 0; color: #172554; font-size: 17px; }
+.text-link { border: 0; padding: 6px 2px; background: transparent; color: #1d4ed8; font-weight: 600; }
+.recent-list { display: grid; gap: 8px; }
+.recent-item { display: grid; min-width: 0; gap: 4px; padding: 10px 0; border-top: 1px solid #edf0f5; }
+.recent-item strong, .recent-item span { overflow-wrap: anywhere; }
+.recent-item strong { color: #334155; font-size: 14px; }
+.recent-item span, .empty-note { color: #64748b; font-size: 13px; line-height: 1.45; }
+.empty-note { margin: 0; }
+.dashboard-recent-grid > .recent-card:last-child { grid-column: 1 / -1; }
+@media (max-width: 1000px) { .stats-container { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 560px) { .stats-container { grid-template-columns: 1fr; width: 100%; } }
+@media (max-width: 700px) { .dashboard-recent-grid { grid-template-columns: 1fr; } .dashboard-recent-grid > .recent-card:last-child { grid-column: auto; } }

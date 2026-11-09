@@ -1,7 +1,8 @@
 from pathlib import Path
 from uuid import uuid4
+import zipfile
 
-import fitz
+import pymupdf as fitz
 from docx import Document
 
 from fastapi import (
@@ -28,30 +29,23 @@ router = APIRouter(
 
 UPLOAD_DIR = Path("uploads")
 UPLOAD_DIR.mkdir(exist_ok=True)
+MAX_UPLOAD_BYTES = 10 * 1024 * 1024
 
 
 def extract_pdf_text(file_path: Path) -> str:
-    document = fitz.open(file_path)
-
-    text = ""
-
-    for page in document:
-        text += page.get_text()
-
-    document.close()
-
-    return text
+    with fitz.open(file_path) as document:
+        return "\n".join(page.get_text() for page in document)
 
 
 def extract_docx_text(file_path: Path) -> str:
     document = Document(file_path)
 
-    text = ""
+    return "\n".join(paragraph.text for paragraph in document.paragraphs)
 
-    for paragraph in document.paragraphs:
-        text += paragraph.text + "\n"
 
-    return text
+def resume_summary(resume: Resume) -> dict:
+    """Expose metadata only; extracted resume text and storage paths are private."""
+    return {"id": resume.id, "filename": resume.filename, "created_at": resume.created_at}
 
 
 @router.post(
@@ -68,28 +62,44 @@ def upload_resume(
         "application/vnd.openxmlformats-officedocument.wordprocessingml.document": ".docx",
     }
 
-    if file.content_type not in allowed_types:
+    if not file.filename or Path(file.filename).suffix.lower() not in {".pdf", ".docx"}:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="Only PDF and DOCX files are allowed",
         )
 
-    extension = allowed_types[file.content_type]
+    extension = Path(file.filename).suffix.lower()
+    if file.content_type not in allowed_types or allowed_types[file.content_type] != extension:
+        raise HTTPException(status_code=400, detail="Only PDF and DOCX files are allowed")
 
     unique_filename = f"{uuid4()}{extension}"
 
     file_path = UPLOAD_DIR / unique_filename
 
-    file_content = file.file.read()
-
-    file_path.write_bytes(file_content)
-
+    size = 0
     try:
+        with file_path.open("wb") as destination:
+            while chunk := file.file.read(1024 * 1024):
+                size += len(chunk)
+                if size > MAX_UPLOAD_BYTES:
+                    raise HTTPException(status_code=413, detail="File exceeds the 10 MB limit")
+                destination.write(chunk)
+
+        if size == 0:
+            raise HTTPException(status_code=400, detail="Uploaded file is empty")
+        if extension == ".pdf" and not file_path.read_bytes().startswith(b"%PDF-"):
+            raise HTTPException(status_code=400, detail="File content does not match PDF format")
+        if extension == ".docx" and not zipfile.is_zipfile(file_path):
+            raise HTTPException(status_code=400, detail="File content does not match DOCX format")
         if extension == ".pdf":
             extracted_text = extract_pdf_text(file_path)
         else:
             extracted_text = extract_docx_text(file_path)
 
+    except HTTPException:
+        if file_path.exists():
+            file_path.unlink()
+        raise
     except Exception:
         if file_path.exists():
             file_path.unlink()
@@ -106,9 +116,14 @@ def upload_resume(
         extracted_text=extracted_text,
     )
 
-    db.add(new_resume)
-    db.commit()
-    db.refresh(new_resume)
+    try:
+        db.add(new_resume)
+        db.commit()
+        db.refresh(new_resume)
+    except Exception:
+        db.rollback()
+        file_path.unlink(missing_ok=True)
+        raise HTTPException(status_code=500, detail="Could not save uploaded resume")
 
     return {
         "id": new_resume.id,
@@ -129,7 +144,7 @@ def get_resumes(
         .all()
     )
 
-    return resumes
+    return [resume_summary(resume) for resume in resumes]
 @router.get("/{resume_id}")
 def get_resume(
     resume_id: int,
@@ -151,7 +166,7 @@ def get_resume(
             detail="Resume not found",
         )
 
-    return resume
+    return {**resume_summary(resume), "extracted_text_length": len(resume.extracted_text or "")}
 
 
 @router.delete("/{resume_id}")

@@ -1,12 +1,15 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-
 from app.core.config import settings
 
+database_url = settings.database_url.replace(
+    "postgresql://",
+    "postgresql+psycopg://",
+    1
+)
 
 engine = create_engine(
-    settings.database_url,
-    # SQL echo would write resume text and other user data to application logs.
+    database_url,
     echo=False,
 )
 
